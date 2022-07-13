@@ -1,11 +1,25 @@
 import './style.css';
+import React from "react";
+import Col from "react-bootstrap/Col";
+import {useNavigate} from "react-router-dom";
 
-const Item = (props) => {
+const TodoItem = (props) => {
+    const navigate = useNavigate();
+
+    const redirect = route => () => {
+        navigate('single-item/' + route)
+    }
+
     return (
-        <div className="col-4">
+        <Col xs={4}>
             <div className='taskWrapper'>
-                <div className='taskHeading'>{props.task.title}</div>
-                <div className='taskDescription'>{props.task.description}</div>
+                <div className='taskHeading'
+                     onClick={redirect(props.task.id)}>
+                    {props.task.title}
+                </div>
+                <div className='taskDescription'>
+                    {props.task.description}
+                </div>
                 <hr/>
                 <label className='completed'>
                     <input type="checkbox"
@@ -19,8 +33,8 @@ const Item = (props) => {
                         onClick={props.removeTodoEl(props.task.id)}>Delete
                 </button>
             </div>
-        </div>
+        </Col>
     );
 }
 
-export default Item;
+export default TodoItem;

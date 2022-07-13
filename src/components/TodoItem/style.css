@@ -7,9 +7,19 @@
 }
 
 .taskHeading {
-    font-size: 20px;
     margin-bottom: 10px;
+    padding: 2px;
+    border: 1px solid transparent;
+    font-size: 20px;
     word-wrap: break-word;
+    cursor: pointer;
+}
+
+.taskHeading:hover {
+    border-radius: 6px;
+    border: 1px solid mediumaquamarine;
+    background-color: #86ab86;
+    color: white;
 }
 
 .taskDescription {
@@ -22,4 +32,5 @@
     display: flex;
     gap: 12px;
     color: rgb(48, 13, 251);
+    cursor: pointer;
 }
