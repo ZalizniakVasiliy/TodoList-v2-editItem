@@ -42,6 +42,13 @@ const TodoList = () => {
             </Container>
         );
     }
+    return (
+        <Container>
+            <main className='mt-5' style={{color: 'darkred'}}>
+                <h2>There's nothing here!</h2>
+            </main>
+        </Container>
+    )
 };
 
 export default TodoList;

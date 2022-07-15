@@ -12,6 +12,7 @@ const SingleItem = () => {
     return (
         <div className='mt-5'>
             <Container>
+                <h1 className='d-flex justify-content-center mb-5'>Single Item</h1>
                 <Row>
                     <Col xs={4}>
                         <div className='taskWrapper'>

@@ -12,7 +12,7 @@ const pages = [
     {
         id: 2,
         route: 'single-item',
-        title: 'Single Todo'
+        title: 'Last Added Item'
     },
     {
         id: 3,
