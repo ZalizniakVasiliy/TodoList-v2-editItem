@@ -23,10 +23,10 @@ const TodoForm = (props) => {
                     as='textarea'
                     placeholder="Task description"
                     style={{
-                        height: '200px'
+                        height: '150px'
                     }}/>
             </Form.Group>
-            <Button variant="primary d-block"
+            <Button variant="primary mb-1 d-block"
                     type="submit"
                     className={props.className}
                     onClick={props.addTodoEl}>

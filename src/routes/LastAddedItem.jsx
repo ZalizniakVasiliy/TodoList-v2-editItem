@@ -2,35 +2,34 @@ import React from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
+import TodoItem from "../components/TodoItem";
+import _ from "lodash";
 
 const LastAddedItem = () => {
-    const localStorageData = JSON.parse(localStorage.getItem('todosStorage'))[0];
+    const data = JSON.parse(localStorage.getItem('todosStorage'));
 
-    if (localStorageData) {
+    const handleChangeStatus = () => (e) => {
+        data[0].completed = e.target.checked;
+        localStorage.setItem('todosStorage', JSON.stringify(data))
+    }
+
+    const handleRemoveTodoItem = (todoItemId) => () => {
+        const newTodoList = data.filter(item => item.id !== todoItemId);
+        localStorage.setItem('todosStorage', JSON.stringify(newTodoList));
+    }
+
+    if (data[0]) {
         return (
             <div className='mt-5'>
                 <Container>
                     <h1 className='d-flex justify-content-center mb-5'>Last Added Item</h1>
                     <Row>
-                        <Col xs={4}>
-                            <div className='taskWrapper'>
-                                <div className='taskHeading'
-                                >{localStorageData.title}</div>
-                                <div className='taskDescription'>{localStorageData.description}</div>
-                                <hr/>
-                                <label className='completed'>
-                                    <input type="checkbox"
-                                           className="form-check-input"
-                                    />
-                                    <span className='status-action'>Done?</span>
-                                </label>
-                                <hr/>
-                                <button className='btn btn-danger delete-btn'>
-                                    Delete
-                                </button>
-                            </div>
+                        <Col>
+                            <TodoItem key={_.uniqueId()}
+                                      task={data[0]}
+                                      removeTodoEl={handleRemoveTodoItem}
+                                      changeStatus={handleChangeStatus}
+                            />
                         </Col>
                     </Row>
                 </Container>

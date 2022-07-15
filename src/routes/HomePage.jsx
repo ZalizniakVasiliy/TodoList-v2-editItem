@@ -44,9 +44,8 @@ const HomePage = () => {
     };
 
     const handleChangeStatus = (itemId) => (e) => {
-        const statusExecution = e.target.checked;
         const currentElem = todoList.find(item => item.id === itemId);
-        currentElem.completed = statusExecution;
+        currentElem.completed = e.target.checked;
         localStorage.setItem('todosStorage', JSON.stringify(todoList))
     }
 
@@ -69,11 +68,10 @@ const HomePage = () => {
         localStorage.clear();
     }
 
-    const activeAddBtn = cn('btn btn-primary mb-1',
-        {
-            'disabled': todoItem.title.trim() === ''
-                || todoItem.description.trim() === ''
-        });
+    const activeAddBtn = cn({
+        'disabled': todoItem.title.trim() === ''
+            || todoItem.description.trim() === ''
+    });
 
     if (todoList.length > 0) {
         return (

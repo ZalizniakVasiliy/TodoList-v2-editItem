@@ -9,9 +9,8 @@ const TodoList = () => {
     const data = JSON.parse(localStorage.getItem('todosStorage'));
 
     const handleChangeStatus = (itemId) => (e) => {
-        const statusExecution = e.target.checked;
         const currentElem = data.find(item => item.id === itemId);
-        currentElem.completed = statusExecution;
+        currentElem.completed = e.target.checked;
         localStorage.setItem('todosStorage', JSON.stringify(data))
     }
 
@@ -24,7 +23,6 @@ const TodoList = () => {
         return (
             <Container>
                 <h1 className="text-center mt-5 mb-5">TODO LIST</h1>
-
                 <Row>
                     <Col xs={8}>
                         <Row>

@@ -7,7 +7,7 @@ const pages = [
     {
         id: 1,
         route: '/',
-        title: 'Home page'
+        title: 'Home Page'
     },
     {
         id: 2,
@@ -17,7 +17,7 @@ const pages = [
     {
         id: 3,
         route: 'all-items',
-        title: ' All todos'
+        title: ' All Todos'
     },
 ]
 
