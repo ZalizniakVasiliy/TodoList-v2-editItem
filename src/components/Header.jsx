@@ -10,11 +10,6 @@ const pages = [
         title: 'Home Page'
     },
     {
-        id: 2,
-        route: 'single-item',
-        title: 'Last Added Item'
-    },
-    {
         id: 3,
         route: 'all-items',
         title: ' All Todos'

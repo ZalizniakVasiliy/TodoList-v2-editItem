@@ -1,5 +1,5 @@
 import React from "react";
-import {useParams} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -7,6 +7,8 @@ import TodoItem from "../components/TodoItem";
 import _ from "lodash";
 
 const SingleItem = () => {
+    const navigate = useNavigate();
+
     const {todoId} = useParams();
 
     const data = JSON.parse(localStorage.getItem('todosStorage'));
@@ -21,11 +23,16 @@ const SingleItem = () => {
         localStorageItem.completed = e.target.checked;
         data[localStorageItemIndex] = localStorageItem;
         localStorage.setItem('todosStorage', JSON.stringify(data))
-    }
+    };
+
+    const redirect = () => {
+        navigate('/');
+    };
 
     const handleRemoveTodoItem = (todoItemId) => () => {
         const newTodoList = data.filter(item => item.id !== todoItemId);
         localStorage.setItem('todosStorage', JSON.stringify(newTodoList));
+        redirect();
     }
 
     if (localStorageItem) {

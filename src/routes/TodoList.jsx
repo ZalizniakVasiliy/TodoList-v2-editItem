@@ -4,8 +4,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import TodoItem from "../components/TodoItem";
 import _ from "lodash";
+import {useNavigate} from "react-router-dom";
 
 const TodoList = () => {
+    const navigate = useNavigate();
+
     const data = JSON.parse(localStorage.getItem('todosStorage'));
 
     const handleChangeStatus = (itemId) => (e) => {
@@ -14,9 +17,14 @@ const TodoList = () => {
         localStorage.setItem('todosStorage', JSON.stringify(data))
     }
 
+    const redirect = () => {
+        navigate('/');
+    };
+
     const handleRemoveTodoItem = (todoItemId) => () => {
         const newTodoList = data.filter(item => item.id !== todoItemId);
         localStorage.setItem('todosStorage', JSON.stringify(newTodoList));
+        redirect();
     }
 
     if (data.length > 0) {

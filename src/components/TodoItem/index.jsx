@@ -6,15 +6,15 @@ import {useNavigate} from "react-router-dom";
 const TodoItem = (props) => {
     const navigate = useNavigate();
 
-    const redirect = route => () => {
-        navigate('single-item/' + route)
+    const redirect = () => {
+        navigate('single-item/' + props.task.id)
     }
 
     return (
         <Col xs={4}>
             <div className='taskWrapper'>
                 <div className='taskHeading'
-                     onClick={redirect(props.task.id)}>
+                     onClick={redirect}>
                     {props.task.title}
                 </div>
                 <div className='taskDescription'>
@@ -30,7 +30,8 @@ const TodoItem = (props) => {
                 </label>
                 <hr/>
                 <button className='btn btn-danger delete-btn'
-                        onClick={props.removeTodoEl(props.task.id)}>Delete
+                        onClick={props.removeTodoEl(props.task.id)}
+                >Delete
                 </button>
             </div>
         </Col>
