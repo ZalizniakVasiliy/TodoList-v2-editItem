@@ -1,99 +1,55 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import Container from "react-bootstrap/Container";
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import TodoForm from '../components/TodoForm';
 import TodoItem from "../components/TodoItem";
-import _ from 'lodash';
-import cn from 'classnames';
+import Storage from "../utils/Storage";
 
 const HomePage = () => {
-    const localStorageData = JSON.parse(localStorage.getItem('todosStorage')) || [];
-
-    const [todoItem, setNewTodoItem] = useState({
-        title: '',
-        description: '',
-        completed: false,
-        id: ''
-    });
-
+    const localStorageData = Storage.getItems() || [];
     const [todoList, setNewTodoList] = useState([...localStorageData]);
 
-    const handleChangeInput = (e) => {
-        e.preventDefault();
-        setNewTodoItem({...todoItem, [e.target.name]: e.target.value});
+    const handleAddTodoItem = todoItem => {
+        const newState = Storage.setItem(todoItem);
+        setNewTodoList(newState);
     };
 
-    useEffect(() => (
-        localStorage.setItem('todosStorage', JSON.stringify(todoList))
-    ), [todoList]);
-
-    const handleAddTodoItem = (e) => {
-        e.preventDefault();
-        const newTodoItem = {...todoItem, id: _.uniqueId()};
-        const newTodoList = [newTodoItem, ...todoList];
-        setNewTodoList(newTodoList);
-        setNewTodoItem(
-            {
-                title: '',
-                description: '',
-                completed: false,
-                id: ''
-            }
-        );
+    const handleChangeStatus = itemId => e => {
+        const currentElem = localStorageData.find(item => item.id === itemId);
+        currentElem.executionStatus = e.target.checked ? 'completed' : 'no-status';
+        localStorage.setItem('todosStorage', JSON.stringify(localStorageData))
     };
 
-    const handleChangeStatus = (itemId) => (e) => {
-        const currentElem = todoList.find(item => item.id === itemId);
-        currentElem.completed = e.target.checked;
-        localStorage.setItem('todosStorage', JSON.stringify(todoList))
-    }
-
-    const handleRemoveTodoItem = (todoItemId) => () => {
+    const handleRemoveTodoItem = todoItemId => () => {
         const newTodoList = todoList.filter(item => item.id !== todoItemId);
+        localStorage.setItem('todosStorage', JSON.stringify(newTodoList));
         setNewTodoList(newTodoList);
-    }
-
-    const handleResetInputs = () => {
-        return todoItem.title || todoItem.description ?
-            setNewTodoItem({
-                ...todoItem,
-                title: '',
-                description: ''
-            }) : true;
-    }
+    };
 
     const handleRemoveAllItems = () => {
         setNewTodoList([]);
         localStorage.clear();
-    }
-
-    const activeAddBtn = cn({
-        'disabled': todoItem.title.trim() === ''
-            || todoItem.description.trim() === ''
-    });
+    };
 
     if (todoList.length > 0) {
         return (
-            <>
+            <div className='mt-5'>
                 <h1 className="text-center mt-5 mb-5">TODO LIST</h1>
-
                 <Container>
                     <Row>
                         <Col xs={4}>
-                            <TodoForm className={activeAddBtn}
-                                      todoEl={todoItem}
-                                      changeInput={handleChangeInput}
-                                      addTodoEl={handleAddTodoItem}
-                                      resetTodoEl={handleResetInputs}
-                                      removeAllTodos={handleRemoveAllItems}/>
+                            <TodoForm
+                                handleAdd={handleAddTodoItem}
+                                removeAllTodos={handleRemoveAllItems}
+                            />
                         </Col>
                         <Col xs={8}>
                             <Row>
                                 {todoList.map(
-                                    item => (
-                                        <TodoItem key={_.uniqueId()}
-                                                  task={item}
+                                    (item, index) => (
+                                        <TodoItem key={index}
+                                                  todoItem={item}
                                                   removeTodoEl={handleRemoveTodoItem}
                                                   changeStatus={handleChangeStatus}
                                         />
@@ -102,21 +58,18 @@ const HomePage = () => {
                         </Col>
                     </Row>
                 </Container>
-            </>
+            </div>
         );
     }
     return (
         <>
             <h1 className="text-center mt-5 mb-5">TODO LIST</h1>
-
             <Container>
                 <Row>
                     <Col xs={4}>
-                        <TodoForm className={activeAddBtn}
-                                  todoEl={todoItem}
-                                  changeInput={handleChangeInput}
-                                  addTodoEl={handleAddTodoItem}
-                                  resetTodoEl={handleResetInputs}/>
+                        <TodoForm
+                            handleAdd={handleAddTodoItem}
+                        />
                     </Col>
                 </Row>
             </Container>

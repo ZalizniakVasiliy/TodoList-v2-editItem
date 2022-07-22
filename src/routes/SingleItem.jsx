@@ -1,51 +1,58 @@
-import React from "react";
 import {useParams, useNavigate} from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import TodoItem from "../components/TodoItem";
-import _ from "lodash";
+import EditTodoForm from "../components/EditTodoForm";
+import Storage from "../utils/Storage";
+import Col from "react-bootstrap/Col";
 
 const SingleItem = () => {
     const navigate = useNavigate();
 
-    const {todoId} = useParams();
-
-    const data = JSON.parse(localStorage.getItem('todosStorage'));
-
-    const localStorageItem = JSON.parse(localStorage.getItem('todosStorage'))
-        .find(item => item.id === todoId);
-
-    const localStorageItemIndex = JSON.parse(localStorage.getItem('todosStorage'))
-        .findIndex(item => item.id === todoId);
-
-    const handleChangeStatus = () => (e) => {
-        localStorageItem.completed = e.target.checked;
-        data[localStorageItemIndex] = localStorageItem;
-        localStorage.setItem('todosStorage', JSON.stringify(data))
-    };
-
     const redirect = () => {
         navigate('/');
+    };
+
+    const {todoId} = useParams();
+    const data = Storage.getItems() || [];
+    const localStorageItemIndex = Storage.getItems().findIndex(item => item.id === +todoId);
+
+    const handleUpdateTodoItem = (e) => {
+        const currentEl = JSON.parse(localStorage.getItem('todosStorage'))[localStorageItemIndex];
+        currentEl.title = e.title;
+        currentEl.description = e.description;
+        data[localStorageItemIndex] = currentEl;
+        localStorage.setItem('todosStorage', JSON.stringify(data));
+        redirect();
+    };
+
+    const handleChangeStatus = () => (e) => {
+        data[localStorageItemIndex].executionStatus = e.target.checked ? 'completed' : 'no-status';
+        localStorage.setItem('todosStorage', JSON.stringify(data));
     };
 
     const handleRemoveTodoItem = (todoItemId) => () => {
         const newTodoList = data.filter(item => item.id !== todoItemId);
         localStorage.setItem('todosStorage', JSON.stringify(newTodoList));
         redirect();
-    }
+    };
 
-    if (localStorageItem) {
+    if (data) {
         return (
             <div className='mt-5'>
                 <Container>
-                    <h1 className='d-flex justify-content-center mb-5'>Single Item</h1>
+                    <h1 className='mb-5'>Single Item</h1>
                     <Row>
+                        <Col xs={3}>
+                            <EditTodoForm
+                                handleUpdate={handleUpdateTodoItem}
+                            />
+                        </Col>
                         <Col>
-                            <TodoItem key={_.uniqueId()}
-                                      task={data[localStorageItemIndex]}
-                                      removeTodoEl={handleRemoveTodoItem}
-                                      changeStatus={handleChangeStatus}
+                            <TodoItem
+                                todoItem={data[localStorageItemIndex]}
+                                removeTodoEl={handleRemoveTodoItem}
+                                changeStatus={handleChangeStatus}
                             />
                         </Col>
                     </Row>

@@ -40,7 +40,7 @@
     word-wrap: break-word;
 }
 
-.completed {
+.status {
     display: flex;
     gap: 12px;
     color: rgb(48, 13, 251);

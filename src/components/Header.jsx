@@ -13,7 +13,7 @@ const pages = [
         id: 3,
         route: 'all-items',
         title: ' All Todos'
-    },
+    }
 ]
 
 const Header = () => {
@@ -21,7 +21,7 @@ const Header = () => {
 
     const handleNavigate = route => () => {
         navigate(route);
-    }
+    };
 
     return (
         <Navbar bg="dark" variant="dark">
