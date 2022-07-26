@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import Container from "react-bootstrap/Container";
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -7,74 +7,62 @@ import TodoItem from "../components/TodoItem";
 import Storage from "../utils/Storage";
 
 const HomePage = () => {
-    const localStorageData = Storage.getItems() || [];
-    const [todoList, setNewTodoList] = useState([...localStorageData]);
+    const data = Storage.getItems() || [];
+    const [todoList, setNewTodoList] = useState([...data]);
 
     const handleAddTodoItem = todoItem => {
         const newState = Storage.setItem(todoItem);
         setNewTodoList(newState);
     };
 
-    const handleChangeStatus = itemId => e => {
-        const currentElem = localStorageData.find(item => item.id === itemId);
-        currentElem.executionStatus = e.target.checked ? 'completed' : 'no-status';
-        localStorage.setItem('todosStorage', JSON.stringify(localStorageData))
+    const handleChangeStatus = todoItemId => e => {
+        const status = e.target.checked ? 'completed' : 'no-status';
+        const newState = Storage.changeStatus(status, todoItemId);
+        setNewTodoList(newState);
     };
 
     const handleRemoveTodoItem = todoItemId => () => {
-        const newTodoList = todoList.filter(item => item.id !== todoItemId);
-        localStorage.setItem('todosStorage', JSON.stringify(newTodoList));
-        setNewTodoList(newTodoList);
+        const newState = Storage.removeItem(todoItemId);
+        setNewTodoList(newState);
     };
 
     const handleRemoveAllItems = () => {
         setNewTodoList([]);
-        localStorage.clear();
+        Storage.clearStorage();
     };
 
-    if (todoList.length > 0) {
-        return (
-            <div className='mt-5'>
-                <h1 className="text-center mt-5 mb-5">TODO LIST</h1>
-                <Container>
-                    <Row>
-                        <Col xs={4}>
-                            <TodoForm
-                                handleAdd={handleAddTodoItem}
-                                removeAllTodos={handleRemoveAllItems}
+    const renderTodoList = () => (
+        <Col xs={8}>
+            <Row>
+                {todoList.map(
+                    (item, index) => (
+                        <Col xs={4} key={index} className='text-break'>
+                            <TodoItem todoItem={item}
+                                      removeTodoEl={handleRemoveTodoItem}
+                                      changeStatus={handleChangeStatus}
                             />
                         </Col>
-                        <Col xs={8}>
-                            <Row>
-                                {todoList.map(
-                                    (item, index) => (
-                                        <TodoItem key={index}
-                                                  todoItem={item}
-                                                  removeTodoEl={handleRemoveTodoItem}
-                                                  changeStatus={handleChangeStatus}
-                                        />
-                                    ))}
-                            </Row>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-        );
-    }
+                    ))}
+            </Row>
+        </Col>
+    );
+
     return (
-        <>
-            <h1 className="text-center mt-5 mb-5">TODO LIST</h1>
+        <div className='mt-5'>
+            <h1 className="text-center mt-5 mb-5">MAKING TODO LIST</h1>
             <Container>
                 <Row>
                     <Col xs={4}>
                         <TodoForm
                             handleAdd={handleAddTodoItem}
+                            removeAllTodos={handleRemoveAllItems}
                         />
                     </Col>
+                    {todoList.length ? renderTodoList() : null}
                 </Row>
             </Container>
-        </>
-    )
+        </div>
+    );
 }
 
 export default HomePage;

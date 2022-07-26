@@ -7,19 +7,28 @@
 }
 
 .taskHeading {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
     margin-bottom: 10px;
+    padding: 3px;
     border: 1px solid transparent;
+    border-radius: 8px;
+    background-color: #c5c3c3;
     font-size: 20px;
-    word-wrap: break-word;
+}
+
+.edit-content-icon {
+    max-height: 26px;
+    margin: 0;
+    font-size: 20px;
+    color: mediumaquamarine;
     cursor: pointer;
 }
 
-.taskHeading:hover {
-    border-radius: 6px;
-    border: 1px solid mediumaquamarine;
-    background-color: #86ab86;
-    color: white;
-    animation: 1s infinite scale;
+.edit-content-icon:hover {
+    color: #ec0f0f;
+    animation: 0.75s infinite scale;
 }
 
 @keyframes scale {
@@ -27,7 +36,7 @@
         transform: scale(1);
     }
     50% {
-        transform: scale(0.75);
+        transform: scale(1.25);
     }
     100% {
         transform: scale(1);

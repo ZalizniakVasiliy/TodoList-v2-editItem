@@ -24,8 +24,9 @@ const EditTodoForm = ({handleUpdate}) => {
     return (
         <Form onSubmit={formik.handleSubmit}>
             <Form.Group className='mb-3'>
-                <Form.Label>Task title</Form.Label>
+                <Form.Label htmlFor='title'>Task title</Form.Label>
                 <Form.Control
+                    name='title'
                     id='title'
                     type='text'
                     placeholder='Edit task title'
@@ -35,8 +36,9 @@ const EditTodoForm = ({handleUpdate}) => {
             </Form.Group>
 
             <Form.Group className='mb-3'>
-                <Form.Label>Task description</Form.Label>
+                <Form.Label htmlFor='description'>Task description</Form.Label>
                 <Form.Control
+                    name='description'
                     id='description'
                     as='textarea'
                     placeholder='Edit task description'
@@ -47,8 +49,8 @@ const EditTodoForm = ({handleUpdate}) => {
                 {formik.touched.description && formik.errors.description ? (
                     <div>{formik.errors.description}</div>) : null}
             </Form.Group>
-            <Button variant="success mb-1 d-block"
-                    type="submit">Update Task
+            <Button variant="danger mb-1 d-block"
+                    type="submit">Edit Task
             </Button>
             <Button variant="warning mb-1 d-block"
                     onClick={formik.handleReset}>Clear

@@ -2,7 +2,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import {Routes, Route} from "react-router-dom";
 import HomePage from './routes/HomePage';
-import SingleItem from "./routes/SingleItem";
+import ItemToEdit from "./routes/ItemToEdit";
 import TodoList from "./routes/TodoList";
 import Container from "react-bootstrap/Container";
 
@@ -13,7 +13,7 @@ function App() {
             <main>
                 <Routes>
                     <Route path='/' element={<HomePage/>}/>
-                    <Route path='single-item/:todoId' element={<SingleItem/>}/>
+                    <Route path='item-to-edit/:todoId' element={<ItemToEdit/>}/>
                     <Route path='all-items' element={<TodoList/>}/>
                     <Route path='*'
                            element={
