@@ -3,11 +3,11 @@ import Button from 'react-bootstrap/Button';
 import {useFormik} from "formik";
 import * as Yup from 'yup';
 
-const EditTodoForm = ({handleUpdate}) => {
+const EditTodoForm = ({handleUpdate, preloadValues}) => {
     const formik = useFormik({
         initialValues: {
-            title: '',
-            description: ''
+            title: preloadValues.title,
+            description: preloadValues.description,
         },
 
         validationSchema: Yup.object({
@@ -24,24 +24,20 @@ const EditTodoForm = ({handleUpdate}) => {
     return (
         <Form onSubmit={formik.handleSubmit}>
             <Form.Group className='mb-3'>
-                <Form.Label htmlFor='title'>Task title</Form.Label>
+                <Form.Label htmlFor='title'>Enter new task title</Form.Label>
                 <Form.Control
-                    name='title'
                     id='title'
                     type='text'
-                    placeholder='Edit task title'
                     {...formik.getFieldProps('title')}/>
                 {formik.touched.title && formik.errors.title ? (
                     <div>{formik.errors.title}</div>) : null}
             </Form.Group>
 
             <Form.Group className='mb-3'>
-                <Form.Label htmlFor='description'>Task description</Form.Label>
+                <Form.Label htmlFor='description'>Enter new task description</Form.Label>
                 <Form.Control
-                    name='description'
                     id='description'
                     as='textarea'
-                    placeholder='Edit task description'
                     style={{
                         height: '150px'
                     }}
@@ -51,9 +47,6 @@ const EditTodoForm = ({handleUpdate}) => {
             </Form.Group>
             <Button variant="danger mb-1 d-block"
                     type="submit">Edit Task
-            </Button>
-            <Button variant="warning mb-1 d-block"
-                    onClick={formik.handleReset}>Clear
             </Button>
         </Form>
     )

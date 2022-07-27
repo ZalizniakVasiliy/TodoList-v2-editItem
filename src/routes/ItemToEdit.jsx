@@ -1,17 +1,21 @@
-import {useParams} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import EditTodoForm from "../components/EditTodoForm";
 import Storage from "../utils/Storage";
 import Col from "react-bootstrap/Col";
 import {useState} from "react";
-import TodoItemToChange from "../components/TodoItemToChange";
 
 const ItemToEdit = () => {
+    const navigate = useNavigate();
     const {todoId} = useParams();
     const data = Storage.getItems() || [];
     const [todoList, setNewTodoList] = useState([...data]);
     const currentIndex = todoList.findIndex(item => item.id === Number(todoId));
+
+    const redirect = () => {
+        navigate('../');
+    };
 
     const handleUpdateTodoItem = e => {
         const currentTitle = e.title.trim();
@@ -19,17 +23,8 @@ const ItemToEdit = () => {
         const todoItemId = todoList[currentIndex].id;
         const newState = Storage.changeContent(todoItemId, currentTitle, currentDescription);
         setNewTodoList(newState);
+        redirect();
     };
-
-    const renderItem = () => (
-        <Col xs={4}>
-            <Row>
-                <TodoItemToChange
-                    todoItem={todoList[currentIndex]}
-                />
-            </Row>
-        </Col>
-    );
 
     const getNoteEmptyContent = () => (
         <div className='mt-5 text-center text-uppercase'>
@@ -49,11 +44,10 @@ const ItemToEdit = () => {
                     <Row className='d-flex justify-content-center'>
                         <Col xs={4}>
                             <EditTodoForm
-                                elem={TodoItemToChange}
+                                preloadValues={todoList[currentIndex]}
                                 handleUpdate={handleUpdateTodoItem}
                             />
                         </Col>
-                        {renderItem()}
                     </Row>
                 </Container>
             </div> : getNoteEmptyContent()
