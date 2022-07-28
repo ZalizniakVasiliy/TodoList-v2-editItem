@@ -22,6 +22,7 @@ const TodoItem = props => {
             <label className='status'>
                 <input type="checkbox"
                        className="form-check-input"
+                       checked={props.todoItem.executionStatus}
                        onChange={props.changeStatus(props.todoItem.id)}
                 />
                 <span className='status-action'>Done?</span>
