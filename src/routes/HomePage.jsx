@@ -16,7 +16,6 @@ const HomePage = () => {
     };
 
     const handleChangeStatus = todoItemId => ({target}) => {
-        // const status = e.target.checked ? 'completed' : 'no-status';
         const newState = Storage.changeStatus(target, todoItemId);
         setNewTodoList(newState);
     };
