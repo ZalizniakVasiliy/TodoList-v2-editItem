@@ -11,7 +11,7 @@ const ItemToEdit = () => {
     const {todoId} = useParams();
     const data = Storage.getItems() || [];
     const [todoList, setNewTodoList] = useState([...data]);
-    const currentIndex = todoList.findIndex(item => item.id === Number(todoId));
+    const currentItem = todoList.find(item => item.id === Number(todoId));
 
     const redirect = () => {
         navigate('../');
@@ -20,7 +20,7 @@ const ItemToEdit = () => {
     const handleUpdateTodoItem = e => {
         const currentTitle = e.title.trim();
         const currentDescription = e.description.trim();
-        const todoItemId = todoList[currentIndex].id;
+        const todoItemId = currentItem.id;
         const newState = Storage.changeContent(todoItemId, currentTitle, currentDescription);
         setNewTodoList(newState);
         redirect();
@@ -37,14 +37,14 @@ const ItemToEdit = () => {
     )
 
     return (
-        todoList[currentIndex] ?
+        currentItem ?
             <div className='mt-5'>
                 <Container>
                     <h1 className='mb-5 text-center'>ITEM TO EDIT with id: {todoId}</h1>
                     <Row className='d-flex justify-content-center'>
                         <Col xs={4}>
                             <EditTodoForm
-                                preloadValues={todoList[currentIndex]}
+                                preloadValues={currentItem}
                                 handleUpdate={handleUpdateTodoItem}
                             />
                         </Col>

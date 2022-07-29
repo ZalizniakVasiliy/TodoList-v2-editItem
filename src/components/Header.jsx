@@ -10,7 +10,7 @@ const pages = [
         title: 'Home Page'
     },
     {
-        id: 3,
+        id: 2,
         route: 'all-items',
         title: ' All Todos'
     }
